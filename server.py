@@ -29,7 +29,6 @@ class Event(BaseModel):
 @web_endpoint(method="POST")
 async def f(event: Event, token: HTTPAuthorizationCredentials = Depends(auth_scheme)):
     import os
-
     print(event)
     if token.credentials != os.environ["AUTH_TOKEN"]:
         raise HTTPException(

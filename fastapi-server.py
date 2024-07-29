@@ -34,3 +34,23 @@ def webhook(event: Event,
             headers={"WWW-Authenticate": "Bearer"},
             )
     return {"message": "Event processed successfully"}
+
+
+def verify_HTTPS_token(credentials: HTTPSAuthorizationCredentials = Depends(https_bearer)):
+	token = credentials.credentials
+	with open("/home/ubuntu/wandb-modal-webhook/SSL/public_key.pem") as in_key:
+		public_key = in_key.read()
+	try:
+		# Decode the JWT token using the public key
+		payload = jwt.decode(token, public_key, algorithms=["RS256"])
+
+	except jwt.ExpiredSignatureError:
+		raise HTTPException(
+			status_code=status.HTTP_403_FORBIDDEN,
+			detail="Token has expired"
+		)
+	except jwt.InvalidTokenError:
+		raise HTTPException(
+			status_code=status.HTTP_403_FORBIDDEN,
+			detail="Invalid token"
+		)
