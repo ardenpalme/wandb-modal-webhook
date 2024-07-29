@@ -25,7 +25,7 @@ class Event(BaseModel):
             msg += f'{k}={v}\n'
         return msg
 
-@stub.function(secret=Secret.from_name("my-random-secret"), image=img)
+@stub.function(secrets=[Secret.from_name("my-random-secret")], image=img)
 @web_endpoint(method="POST")
 async def f(event: Event, token: HTTPAuthorizationCredentials = Depends(auth_scheme)):
     import os

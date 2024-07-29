@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # Default URL
-URL="http://localhost:8000/"
+URL="https://3.128.204.27:80"
 
 # Check if a URL is provided as the first argument
 if [ "$1" != "" ]; then
